@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallify_ui/types/all_wallpaper.dart';
+
 import 'package:wallify_ui/widget/category_design.dart';
 class Categories extends StatefulWidget {
   const Categories({super.key});

@@ -19,8 +19,16 @@ class _AllWallpaperState extends State<AllWallpaper> {
 
    getOnLoad() async {
     categoryStream = await DatabaseMethods().getCategory(widget.category);
-    setState(() {});
+    setState(() {
+
+    });
   }
+   @override
+   void initState() {
+     super.initState();
+     print(widget.category);
+     getOnLoad();
+   }
 
   Widget allWallpaper() {
     return StreamBuilder(
@@ -52,12 +60,6 @@ class _AllWallpaperState extends State<AllWallpaper> {
         });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    print(widget.category);
-    getOnLoad();
-  }
 
   @override
   Widget build(BuildContext context) {
