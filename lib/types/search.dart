@@ -17,7 +17,7 @@ class _SearchState extends State<Search> {
   List<PhotosModel> photos = [];
   TextEditingController searchcontroller = new TextEditingController();
 
-  getSearchWallpaper(String searchQuery) async {
+  Future<void> getSearchWallpaper(String searchQuery) async {
     await http.get(
         Uri.parse(
             "https://api.pexels.com/v1/search?query=$searchQuery&per_page=30"),
@@ -68,10 +68,10 @@ class _SearchState extends State<Search> {
                 decoration:  InputDecoration(
                     border: InputBorder.none,
                     suffixIcon: GestureDetector(
-                      onTap: (){
-                        getSearchWallpaper(searchcontroller.text);
+                      onTap: () async {
+                       await getSearchWallpaper(searchcontroller.text);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.search_outlined ,
                         color: Color.fromARGB(225, 84, 87, 93),
                       ),

@@ -1,25 +1,25 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'chat.dart'; // Import your ChatScreen widget from chat.dart
+import 'package:wallify_ui/auth/auth_gate.dart';
+import 'package:wallify_ui/firebase_options.dart';
+import 'package:wallify_ui/theme/light_mode.dart';
+import 'auth/login_or_register.dart';
 
-void main() async {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const MyApp ());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  // Initialize the FlutterLocalNotificationsPlugin
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  // Android-specific initialization settings
-  final InitializationSettings initializationSettingsAndroid =
-  InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'));
-
-  // Initialize the plugin with Android settings only
-  await flutterLocalNotificationsPlugin.initialize(initializationSettingsAndroid);
-
-  // Run the app
-  runApp(MaterialApp(
-    home: ChatScreen(),
-  ));
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AuthGate(),
+      theme: lightMode,
+    );
+  }
 }
 

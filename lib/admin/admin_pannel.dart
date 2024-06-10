@@ -83,7 +83,7 @@ class _AdminLogInState extends State<AdminLogIn> {
                                           return 'please enter user name ';
                                         }
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'username',
                                           hintStyle: TextStyle(
@@ -93,7 +93,7 @@ class _AdminLogInState extends State<AdminLogIn> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 50.0,
                                 ),
                                 Container(
@@ -139,7 +139,7 @@ class _AdminLogInState extends State<AdminLogIn> {
                                         color: Colors.black,
                                         borderRadius:
                                             BorderRadius.circular(10)),
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         'Login',
                                         style: TextStyle(

@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ChatScreen(),
-  ));
-}
+
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -21,8 +16,6 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _showSentImageMessage = false;
   bool _lastMessageWasSentByUser = false;
   bool _isNewDummyMessage = false; // Flag to track new dummy message
-
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -64,7 +57,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Chat'),
       ),
@@ -143,43 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ],
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _buildNotification(),
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildNotification() {
-    return Dismissible(
-      key: Key('notification'),
-      direction: DismissDirection.horizontal,
-      onDismissed: (_) {
-        setState(() {});
-      },
-      child: Container(
-        color: Colors.orange,
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'New Dummy Message',
-              style: TextStyle(color: Colors.white),
-            ),
-            IconButton(
-              icon: Icon(Icons.clear),
-              color: Colors.white,
-              onPressed: () {
-                setState(() {});
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -213,11 +169,19 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _showDummyNotification() {
-    _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(
-        content: Text('New Dummy Message'),
-      ),
-    );
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              FlutterLogo(),
+              SizedBox(width: 12),
+              Text('you got a New Message'),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -257,22 +221,28 @@ class MessageBubble extends StatelessWidget {
               if (!isMe && showSeenIcon)
                 Icon(Icons.check_circle, color: Colors.grey),
               if (!isMe) SizedBox(width: 8.0),
-              if (!isMe)
-                CircleAvatar(
-                  backgroundImage: AssetImage('images/boy.png'),
-                  radius: 12.0,
-                ),
-              SizedBox(width: 8.0),
+              if (!isMe) CircleAvatar(
+                backgroundImage: AssetImage('images/boy.jpeg'),
+              ),
               if (message is String)
-                Text(
-                  message,
-                  style: TextStyle(color: isMe ? Colors.white : Colors.black),
+                Flexible(
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                      color: isMe ? Colors.white : Colors.black,
+                    ),
+                  ),
+                )
+              else if (message is File)
+                Flexible(
+                  child: Image.file(
+                    message,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              if (message is File)
-                CircleAvatar(
-                  backgroundImage: FileImage(message),
-                  radius: 50.0,
-                ),
+              if (isMe) SizedBox(width: 8.0),
             ],
           ),
         ),
@@ -288,15 +258,24 @@ class SavedImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.5,
-      height: MediaQuery.of(context).size.width * 0.5,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: FileImage(image),
-          fit: BoxFit.cover,
+    return Stack(
+      children: [
+        Image.file(image),
+        Positioned(
+          bottom: 16.0,
+          right: 16.0,
+          child: FloatingActionButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Image saved!'),
+                ),
+              );
+            },
+            child: Icon(Icons.save),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
