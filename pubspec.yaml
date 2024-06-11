@@ -57,6 +57,7 @@ dependencies:
   cupertino_icons:
   onesignal_flutter:
   firebase_auth: ^4.17.8
+  provider:
 
 dev_dependencies:
   flutter_test:
