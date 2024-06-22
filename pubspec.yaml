@@ -58,6 +58,9 @@ dependencies:
   onesignal_flutter:
   firebase_auth: ^4.17.8
   provider:
+  google_sign_in:
+  fl_chart:
+  google_sign_in_platform_interface:
 
 dev_dependencies:
   flutter_test:
@@ -83,7 +86,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - images/
+     - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
